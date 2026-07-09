@@ -91,9 +91,13 @@ export default function Terminal() {
   };
 
   useEffect(() => {
-    push('Welcome to this program !', 'system');
-    push(ART_LOGO, 'logo');
-    const t = setTimeout(() => setBooted(true), 150);
+    setTimeout(() => push("Initializing Cipher Engine...", "system"), 150);
+    setTimeout(() => push("Loading decryption modules...", "system"), 500);
+    setTimeout(() => push("Establishing secure terminal...", "system"), 900);
+    setTimeout(() => push("Access Granted ✓", "success"), 1300);
+    setTimeout(() => push(ART_LOGO, "logo"), 1700);
+    setTimeout(() => push("Welcome to this program !", "system"), 2000);
+    const t = setTimeout(() => setBooted(true), 2200);
     return () => clearTimeout(t);
   }, []);
 
@@ -151,7 +155,25 @@ export default function Terminal() {
   }, [solved]);
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-[#04070a] text-[#39ff88] font-mono selection:bg-[#39ff88] selection:text-black">
+    <div
+  className="relative min-h-screen w-full overflow-hidden bg-[#020406] text-[#39ff88] font-mono selection:bg-[#39ff88] selection:text-black"
+  style={{
+    backgroundImage: `
+      radial-gradient(circle at top, rgba(57,255,136,.08), transparent 55%),
+      radial-gradient(circle at bottom, rgba(0,255,120,.05), transparent 60%)
+    `
+  }}
+>
+      <div
+  className="pointer-events-none fixed inset-0 z-10"
+  style={{
+    boxShadow:
+      "inset 0 0 180px rgba(0,0,0,.9), inset 0 0 80px rgba(57,255,136,.08)",
+    animation: "crtFlicker .15s infinite",
+  }}
+/>
+
+
       <ScanlineOverlay />
       <GridBackdrop />
 
@@ -180,18 +202,33 @@ export default function Terminal() {
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#39ff88]" />
             live decoder terminal
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-[#39ff88] sm:text-3xl">
-            <span className="text-[#39ff88]/40">$</span> the obscurable
-            universe cipher
+          <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
+            Secret Message
+            <span className="block mt-2 text-[#39ff88]">
+              Decryption Terminal
+            </span>
           </h1>
-          <p className="text-sm text-[#39ff88]/50">
-            A Caesar-shift decoding game, ported straight from a Python
-            console script — same logic, same wording, zero changes.
+          <p className="mt-3 max-w-2xl text-base leading-7 text-gray-400">
+          Decrypt a hidden message by discovering the correct Caesar cipher key.
+          Built from an original Python project and reimagined as an interactive
+          terminal experience.
           </p>
         </header>
 
-        <div className="flex flex-1 flex-col overflow-hidden rounded-lg border border-[#39ff88]/25 bg-black/60 shadow-[0_0_40px_-10px_rgba(57,255,136,0.35)] backdrop-blur-sm">
-          <div className="flex items-center gap-2 border-b border-[#39ff88]/20 bg-[#39ff88]/5 px-4 py-2.5">
+        <div
+          className="flex flex-1 flex-col overflow-hidden rounded-2xl
+          border border-[#39ff88]/20
+          bg-[#05080d]/90
+          backdrop-blur-xl
+          shadow-[0_0_80px_rgba(0,255,150,.18)]
+          transition-all duration-500"
+        >
+          <div
+              className="flex items-center gap-3
+            border-b border-[#1f2937]
+            bg-[#0d1117]
+            px-5 py-3"
+          >
             <span className="h-3 w-3 rounded-full bg-[#ff5f56]" />
             <span className="h-3 w-3 rounded-full bg-[#ffbd2e]" />
             <span className="h-3 w-3 rounded-full bg-[#27c93f]" />
@@ -203,35 +240,67 @@ export default function Terminal() {
             </span>
           </div>
 
-          <div
-            ref={scrollRef}
-            className="min-h-[360px] flex-1 space-y-2 overflow-y-auto px-4 py-4 text-sm leading-relaxed sm:text-[15px]"
-            data-testid="terminal-output"
-          >
+         <div
+  ref={scrollRef}
+  className="
+  flex-1
+  overflow-y-auto
+  px-8
+  py-8
+  text-[15px]
+  leading-8
+  bg-[#05080d]
+  text-[#b7ffd5]
+  selection:bg-[#39ff88]
+  selection:text-black
+  scrollbar-thin
+  scrollbar-thumb-[#39ff88]/20
+  scrollbar-track-transparent
+  "
+  data-testid="terminal-output"
+>
             {lines.map((line) => (
               <TerminalLine key={line.id} line={line} />
             ))}
 
             {!solved && booted && (
               <form
-                onSubmit={handleSubmit}
-                className="flex items-center gap-2 pt-1"
-              >
-                <span className="text-[#39ff88]/70">
-                  Choose a number between 0-9 to decrypt the message :
-                </span>
-                <input
-                  ref={inputRef}
-                  value={value}
-                  onChange={(e) => setValue(e.target.value)}
-                  inputMode="numeric"
-                  autoComplete="off"
-                  className="w-16 border-none bg-transparent text-[#39ff88] caret-[#39ff88] outline-none placeholder:text-[#39ff88]/30"
-                  placeholder="_"
-                  data-testid="input-number"
-                  aria-label="Choose a number between 0-9 to decrypt the message"
-                />
-              </form>
+  onSubmit={handleSubmit}
+  className="mt-4 flex items-center"
+>
+  <span className="mr-3 text-[#22c55e] font-bold">
+    visitor@cipher:~$
+  </span>
+
+  <input
+  ref={inputRef}
+  value={value}
+  onChange={(e) => setValue(e.target.value)}
+  style={{
+    background: "transparent",
+    border: "none",
+    outline: "none",
+    color: "#39ff88",
+    fontSize: "20px",
+    width: "60px",
+    WebkitAppearance: "none",
+    appearance: "none",
+    boxShadow: "none",
+  }}
+/>
+
+  <span
+    className="ml-1"
+    style={{
+      width: "10px",
+      height: "22px",
+      background: "#39ff88",
+      display: "inline-block",
+      animation: "blink .9s infinite"
+    }}
+  />
+</form>
+
             )}
 
             {solved && (
@@ -279,14 +348,45 @@ export default function Terminal() {
       </div>
 
       <style>{`
-        @keyframes cipher-fall {
-          0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
-          10% { opacity: 1; }
-          100% { transform: translateY(110vh) rotate(360deg); opacity: 0.9; }
-        }
-      `}</style>
+  @keyframes cipher-fall {
+    0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0.9; }
+  }
+  @keyframes crtFlicker {
+  0% { opacity: .96; }
+  50% { opacity: 1; }
+  100% { opacity: .97; }
+}
+
+  @keyframes blink {
+    0%,50% { opacity: 1; }
+    51%,100% { opacity: 0; }
+  }
+`}</style>
     </div>
   );
+}
+
+function Typewriter({ text }: { text: string }) {
+  const [displayed, setDisplayed] = useState("");
+
+  useEffect(() => {
+    let i = 0;
+
+    const timer = setInterval(() => {
+      i++;
+      setDisplayed(text.slice(0, i));
+
+      if (i >= text.length) {
+        clearInterval(timer);
+      }
+    }, 12);
+
+    return () => clearInterval(timer);
+  }, [text]);
+
+  return <>{displayed}</>;
 }
 
 function TerminalLine({ line }: { line: LogLine }) {
@@ -299,7 +399,11 @@ function TerminalLine({ line }: { line: LogLine }) {
   }
   if (line.tone === 'input') {
     return (
-      <div className="text-[#39ff88]/80">
+      <div className="
+text-[#39ff88]
+font-semibold
+tracking-wide
+">
         <span className="text-[#39ff88]/40">&gt; </span>
         {line.text}
       </div>
@@ -323,9 +427,18 @@ function TerminalLine({ line }: { line: LogLine }) {
     );
   }
   if (line.tone === 'prompt') {
-    return <div className="text-[#39ff88]/70">{line.text}</div>;
+    return (
+  <div className="whitespace-pre-wrap leading-8 tracking-wide text-[#d9ffe8]">
+    <Typewriter text={line.text} />
+  </div>
+);
   }
-  return <div className="whitespace-pre-wrap text-[#39ff88]/70">{line.text}</div>;
+  return <div className="
+whitespace-pre-wrap
+leading-8
+tracking-wide
+text-[#d9ffe8]
+">{line.text}</div>;
 }
 
 function ScanlineOverlay() {
